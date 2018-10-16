@@ -1,9 +1,11 @@
 package com.github.ankotutorial
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import org.jetbrains.anko.*
+import org.jetbrains.anko.sdk25.coroutines.onClick
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,7 +26,22 @@ class MainActivity : AppCompatActivity() {
                     hint = "what's your name?"
                 }
 
-                button("Say Hello")
+                button("Say Hello").onClick {
+                    longToast("HAIHAI!")
+                    startActivity<AnkoCommonsActivity>("name" to "dicoding")
+                }
+
+                button("Alert").onClick {
+                    alert("HAPPY CODING!") {
+                        yesButton { toast("RIGHTO!") }
+                        noButton {  }
+                    }.show()
+                }
+
+                button("process dialogs").onClick {
+                    indeterminateProgressDialog("Hai!, please wait for a sec...").show()
+                }
+
             }
         }
     }
