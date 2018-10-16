@@ -1,10 +1,14 @@
 package com.github.ankotutorial
 
 import android.content.Intent
+import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.View
+import com.github.ankotutorial.R.color.colorAccent
 import org.jetbrains.anko.*
+import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
 class MainActivity : AppCompatActivity() {
@@ -17,29 +21,73 @@ class MainActivity : AppCompatActivity() {
     class MainActivityUI: AnkoComponent<MainActivity> {
         override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
             verticalLayout {
-                imageView(R.drawable.ic_android_black_24dp).lparams(width = matchParent) {
-                    padding = dip(20)
-                    margin = dip(15)
+                padding = dip(16)
+
+                val name = editText { hint = "What's your name?" }
+
+                button("Show Toast") {
+                    backgroundColor = ContextCompat.getColor(context, colorAccent)
+                    textColor = Color.WHITE
+                    onClick { toast("Hello, ${name.text}!") }
+                }.lparams(width = matchParent) {
+                    topMargin = dip(5)
                 }
 
-                val name = editText() {
-                    hint = "what's your name?"
+                button("Show Alert") {
+                    backgroundColor = ContextCompat.getColor(context, colorAccent)
+                    textColor = Color.WHITE
+                    onClick {
+                        alert("Happy Coding!", "Hello, ${name.text}") {
+                            yesButton { toast("Oh...") }
+                            noButton {  }
+                        }.show()
+                    }
+                }.lparams(width = matchParent) {
+                    topMargin = dip(5)
                 }
 
-                button("Say Hello").onClick {
-                    longToast("HAIHAI!")
-                    startActivity<AnkoCommonsActivity>("name" to "dicoding")
+                button("Show Selector") {
+                    backgroundColor = ContextCompat.getColor(context, colorAccent)
+                    textColor = Color.WHITE
+                    onClick {
+                        val club = listOf("Barcelona", "Real Madrid", "Bayern Munchen", "Liverpool")
+                        selector("Hello, ${name.text}! What's football club do you love?", club) {
+                            _, i ->
+                            toast("So you love ${club[i]}, right?")
+                        }
+                    }
+                }.lparams(width = matchParent) {
+                    topMargin = dip(5)
                 }
 
-                button("Alert").onClick {
-                    alert("HAPPY CODING!") {
-                        yesButton { toast("RIGHTO!") }
-                        noButton {  }
-                    }.show()
+                button("Show Snackbar") {
+                    backgroundColor = ContextCompat.getColor(context, colorAccent)
+                    textColor = Color.WHITE
+                    onClick {
+                        snackbar(name, "Hello, ${name.text}!")
+                    }
+                }.lparams(width = matchParent) {
+                    topMargin = dip(5)
                 }
 
-                button("process dialogs").onClick {
-                    indeterminateProgressDialog("Hai!, please wait for a sec...").show()
+                button("Show Progress Bar") {
+                    backgroundColor = ContextCompat.getColor(context, colorAccent)
+                    textColor = Color.WHITE
+                    onClick {
+                        indeterminateProgressDialog("Hello, ${name.text}! Please Wait...").show()
+                    }
+                }.lparams(width = matchParent) {
+                    topMargin = dip(5)
+                }
+
+                button("Go to Second Activity") {
+                    backgroundColor = ContextCompat.getColor(context, colorAccent)
+                    textColor = Color.WHITE
+                    onClick {
+                        startActivity<SecondActivity>("name" to "${name.text}")
+                    }
+                }.lparams(width = matchParent) {
+                    topMargin = dip(5)
                 }
 
             }
